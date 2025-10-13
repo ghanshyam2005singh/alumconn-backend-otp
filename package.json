@@ -1,5 +1,5 @@
 {
-  "name": "alumconn-backend",
+  "name": "alumconn-backend-otp",
   "version": "1.0.0",
   "description": "Backend and OTP and password reset service for AlumConn",
   "main": "index.js",
