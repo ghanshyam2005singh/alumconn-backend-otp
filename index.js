@@ -548,7 +548,7 @@ app.post('/api/otp/send-reset', otpLimiter, validateEmail, async (req, res) => {
                             <span style="margin-right: 8px;">⚠️</span>Didn't Request This?
                           </p>
                           <p style="margin: 0; color: #991b1b; font-size: 14px; line-height: 1.5;">
-                            If you didn't request a password reset, your account may be at risk. Please <a href="mailto:security@alumconn.in" style="color: #dc2626; font-weight: 600;">contact our security team</a> immediately.
+                            If you didn't request a password reset, your account may be at risk. Please <a href="mailto:team@alumconn.in" style="color: #dc2626; font-weight: 600;">contact our security team</a> immediately.
                           </p>
                         </div>
                       </td>
