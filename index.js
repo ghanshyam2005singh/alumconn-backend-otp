@@ -170,9 +170,7 @@ const validateOTP = (req, res, next) => {
   next();
 };
 
-// ...existing code...
-
-// Send Signup OTP - Professional email template
+// Send Signup OTP
 app.post('/api/otp/send-signup', otpLimiter, validateEmail, async (req, res) => {
   console.log('Received signup OTP request:', req.body.email);
   
@@ -185,195 +183,59 @@ app.post('/api/otp/send-signup', otpLimiter, validateEmail, async (req, res) => 
   
   console.log(`Generated signup OTP for ${email}: ${otp}`);
   
-  // Professional email template
+  // Send email
   const emailResult = await sendEmail(
     email,
-    'Welcome to Alumconn - Verify Your Email Address',
+    'Alumconn - Verify Your Email',
     `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Welcome to Alumconn</title>
-    </head>
-    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc; line-height: 1.6;">
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: #03045e; margin: 0;">
+          <a href="https://alumconn.in" style="color: #03045e; text-decoration: none;">Alumconn</a>
+        </h1>
+        <p style="color: #6b7280; margin: 5px 0 0 0;">Alumni Connection Platform</p>
+      </div>
       
-      <!-- Main Container -->
-      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8fafc; padding: 40px 0;">
-        <tr>
-          <td align="center">
-            
-            <!-- Email Card -->
-            <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); overflow: hidden; max-width: 600px; width: 100%;">
-              
-              <!-- Header with Brand -->
-              <tr>
-                <td style="background: linear-gradient(135deg, #03045e 0%, #023e8a 100%); padding: 40px 40px 30px 40px; text-align: center;">
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="text-align: center;">
-                        <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; letter-spacing: -0.5px;">
-                          <a href="https://alumconn.in" style="color: #ffffff; text-decoration: none;">Alumconn</a>
-                        </h1>
-                        <p style="margin: 8px 0 0 0; color: rgba(255, 255, 255, 0.9); font-size: 16px; font-weight: 500;">Alumni Connection Platform</p>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              
-              <!-- Main Content -->
-              <tr>
-                <td style="padding: 50px 40px;">
-                  
-                  <!-- Welcome Section -->
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="text-align: center; padding-bottom: 30px;">
-                        <div style="display: inline-block; width: 60px; height: 60px; background: linear-gradient(135deg, #03045e 0%, #023e8a 100%); border-radius: 50%; margin-bottom: 20px; position: relative;">
-                          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 24px;">🎓</div>
-                        </div>
-                        <h2 style="margin: 0 0 10px 0; color: #1a202c; font-size: 28px; font-weight: 700; line-height: 1.2;">Welcome to Alumconn!</h2>
-                        <p style="margin: 0; color: #4a5568; font-size: 18px; line-height: 1.5;">Join thousands of alumni connecting worldwide</p>
-                      </td>
-                    </tr>
-                  </table>
-                  
-                  <!-- Description -->
-                  <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
-                    <tr>
-                      <td style="padding: 0 0 30px 0;">
-                        <p style="margin: 0; color: #2d3748; font-size: 16px; line-height: 1.6; text-align: center;">
-                          We're excited to have you join our community! To complete your registration and secure your account, please verify your email address using the verification code below.
-                        </p>
-                      </td>
-                    </tr>
-                  </table>
-                  
-                  <!-- OTP Card -->
-                  <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
-                    <tr>
-                      <td style="text-align: center;">
-                        <div style="background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border: 2px solid #e2e8f0; border-radius: 12px; padding: 30px; margin: 20px 0; position: relative; overflow: hidden;">
-                          <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #03045e, #023e8a, #0077b6, #023e8a, #03045e); animation: shimmer 2s ease-in-out infinite;"></div>
-                          <p style="margin: 0 0 15px 0; color: #4a5568; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Verification Code</p>
-                          <div style="font-family: 'Courier New', Monaco, monospace; font-size: 36px; font-weight: 700; color: #03045e; letter-spacing: 12px; margin: 10px 0; text-shadow: 0 2px 4px rgba(3, 4, 94, 0.1);">
-                            ${otp}
-                          </div>
-                          <p style="margin: 15px 0 0 0; color: #718096; font-size: 13px;">Enter this code in the verification field</p>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                  
-                  <!-- Timer Alert -->
-                  <table width="100%" cellpadding="0" cellspacing="0" style="margin: 25px 0;">
-                    <tr>
-                      <td>
-                        <div style="background: linear-gradient(135deg, #fff5b4 0%, #fed7aa 100%); border-left: 4px solid #f59e0b; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                          <div style="display: flex; align-items: center;">
-                            <span style="font-size: 20px; margin-right: 12px;">⏰</span>
-                            <div>
-                              <p style="margin: 0; color: #92400e; font-size: 15px; font-weight: 600;">
-                                <strong>Time Sensitive:</strong> This code expires in 5 minutes
-                              </p>
-                              <p style="margin: 5px 0 0 0; color: #b45309; font-size: 14px;">
-                                For your security, please complete verification promptly.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                  
-                  <!-- CTA Button -->
-                  <table width="100%" cellpadding="0" cellspacing="0" style="margin: 40px 0 30px 0;">
-                    <tr>
-                      <td style="text-align: center;">
-                        <a href="https://alumconn.in" style="display: inline-block; background: linear-gradient(135deg, #03045e 0%, #023e8a 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 16px; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(3, 4, 94, 0.2); transition: all 0.3s ease;">
-                          <span style="margin-right: 8px;">🌐</span>
-                          Continue to Alumconn
-                        </a>
-                        <p style="margin: 20px 0 0 0; color: #718096; font-size: 14px;">
-                          Or visit: <a href="https://alumconn.in" style="color: #03045e; text-decoration: none; font-weight: 600;">alumconn.in</a>
-                        </p>
-                      </td>
-                    </tr>
-                  </table>
-                  
-                </td>
-              </tr>
-              
-              <!-- Security Notice -->
-              <tr>
-                <td style="background-color: #f7fafc; padding: 30px 40px; border-top: 1px solid #e2e8f0;">
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="text-align: center;">
-                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px;">
-                          <p style="margin: 0 0 10px 0; color: #2d3748; font-size: 15px; font-weight: 600;">
-                            <span style="margin-right: 8px;">🔒</span>Security Notice
-                          </p>
-                          <p style="margin: 0; color: #4a5568; font-size: 14px; line-height: 1.5;">
-                            We never ask for your verification code via phone or email. If you didn't request this verification, please ignore this message or contact our security team.
-                          </p>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              
-              <!-- Footer -->
-              <tr>
-                <td style="background-color: #2d3748; padding: 40px 40px 30px 40px;">
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="text-align: center;">
-                        <h3 style="margin: 0 0 20px 0; color: #ffffff; font-size: 18px; font-weight: 600;">Stay Connected</h3>
-                        <div style="margin: 20px 0;">
-                          <a href="https://alumconn.in" style="display: inline-block; margin: 0 15px; color: #90cdf4; text-decoration: none; font-size: 14px; font-weight: 500;">Website</a>
-                          <span style="color: #4a5568;">|</span>
-                          <a href="mailto:team@alumconn.in" style="display: inline-block; margin: 0 15px; color: #90cdf4; text-decoration: none; font-size: 14px; font-weight: 500;">Support</a>
-                          <span style="color: #4a5568;">|</span>
-                          <a href="https://alumconn.in/privacy" style="display: inline-block; margin: 0 15px; color: #90cdf4; text-decoration: none; font-size: 14px; font-weight: 500;">Privacy</a>
-                        </div>
-                        <div style="margin: 25px 0 15px 0; padding-top: 20px; border-top: 1px solid #4a5568;">
-                          <p style="margin: 0; color: #9ca3af; font-size: 13px; line-height: 1.4;">
-                            <strong>Alumconn</strong> - Connecting Alumni Worldwide<br>
-                            Building bridges between past, present, and future generations.
-                          </p>
-                        </div>
-                        <p style="margin: 15px 0 0 0; color: #6b7280; font-size: 12px;">
-                          © 2024 Alumconn. All rights reserved. | This email was sent to ${email}
-                        </p>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              
-            </table>
-            
-            <!-- Email Client Compatibility -->
-            <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; margin-top: 20px;">
-              <tr>
-                <td style="text-align: center; padding: 20px;">
-                  <p style="margin: 0; color: #9ca3af; font-size: 12px;">
-                    Having trouble viewing this email? <a href="https://alumconn.in" style="color: #03045e;">View in browser</a>
-                  </p>
-                </td>
-              </tr>
-            </table>
-            
-          </td>
-        </tr>
-      </table>
+      <div style="background: #f8fafc; border-radius: 10px; padding: 30px; margin: 20px 0;">
+        <h2 style="color: #03045e; margin: 0 0 20px 0; text-align: center;">Welcome to Alumconn!</h2>
+        <p style="color: #374151; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
+          Thank you for signing up with Alumconn. To complete your registration, please verify your email address using the OTP below:
+        </p>
+        
+        <div style="background: white; border: 2px dashed #03045e; border-radius: 10px; padding: 25px; text-align: center; margin: 25px 0;">
+          <p style="color: #6b7280; font-size: 14px; margin: 0 0 10px 0;">Your verification code:</p>
+          <div style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #03045e; font-family: 'Courier New', monospace;">
+            ${otp}
+          </div>
+        </div>
+        
+        <div style="background: #fef3cd; border-radius: 8px; padding: 15px; margin: 20px 0;">
+          <p style="color: #92400e; font-size: 14px; margin: 0;">
+            ⏰ This OTP will expire in <strong>5 minutes</strong>. Please enter it promptly to verify your account.
+          </p>
+        </div>
+         <!-- Visit Site Button -->
+        <div style="text-align: center; margin: 25px 0;">
+          <a href="https://alumconn.in" style="display: inline-block; background-color: #03045e; color: white; padding: 12px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
+            🌐 Visit Alumconn.in
+          </a>
+        </div>
+        
+        <p style="color: #6b7280; font-size: 14px; line-height: 1.5;">
+          If you didn't create an account with Alumconn, please ignore this email or contact our support team.
+        </p>
+      </div>
       
-    </body>
-    </html>
+      <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+        <p style="color: #9ca3af; font-size: 12px; margin: 0 0 10px 0;">
+          This email was sent by Alumconn • Alumni Connection Platform
+        </p>
+        <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+          <a href="https://alumconn.in" style="color: #03045e; text-decoration: none;">Visit our website</a> | 
+          <a href="mailto:team@alumconn.in" style="color: #03045e; text-decoration: none;">Contact Support</a>
+        </p>
+      </div>
+    </div>
     `
   );
   
@@ -392,7 +254,7 @@ app.post('/api/otp/send-signup', otpLimiter, validateEmail, async (req, res) => 
   });
 });
 
-// Send Reset OTP - Professional email template
+// Send Reset OTP
 app.post('/api/otp/send-reset', otpLimiter, validateEmail, async (req, res) => {
   console.log('Received reset OTP request:', req.body.email);
   
@@ -405,206 +267,61 @@ app.post('/api/otp/send-reset', otpLimiter, validateEmail, async (req, res) => {
   
   console.log(`Generated reset OTP for ${email}: ${otp}`);
   
-  // Professional password reset email template
+  // Send email
   const emailResult = await sendEmail(
     email,
-    'Alumconn - Secure Password Reset Request',
+    'Alumconn - Password Reset Request',
     `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Password Reset - Alumconn</title>
-    </head>
-    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc; line-height: 1.6;">
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: #03045e; margin: 0;">
+          <a href="https://alumconn.in" style="color: #03045e; text-decoration: none;">Alumconn</a>
+        </h1>
+        <p style="color: #6b7280; margin: 5px 0 0 0;">Alumni Connection Platform</p>
+      </div>
       
-      <!-- Main Container -->
-      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8fafc; padding: 40px 0;">
-        <tr>
-          <td align="center">
-            
-            <!-- Email Card -->
-            <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); overflow: hidden; max-width: 600px; width: 100%;">
-              
-              <!-- Header with Brand -->
-              <tr>
-                <td style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 40px 40px 30px 40px; text-align: center;">
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="text-align: center;">
-                        <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; letter-spacing: -0.5px;">
-                          <a href="https://alumconn.in" style="color: #ffffff; text-decoration: none;">Alumconn</a>
-                        </h1>
-                        <p style="margin: 8px 0 0 0; color: rgba(255, 255, 255, 0.9); font-size: 16px; font-weight: 500;">Alumni Connection Platform</p>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              
-              <!-- Main Content -->
-              <tr>
-                <td style="padding: 50px 40px;">
-                  
-                  <!-- Security Alert Section -->
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="text-align: center; padding-bottom: 30px;">
-                        <div style="display: inline-block; width: 60px; height: 60px; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); border-radius: 50%; margin-bottom: 20px; position: relative;">
-                          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 24px;">🔐</div>
-                        </div>
-                        <h2 style="margin: 0 0 10px 0; color: #1a202c; font-size: 28px; font-weight: 700; line-height: 1.2;">Password Reset Request</h2>
-                        <p style="margin: 0; color: #4a5568; font-size: 18px; line-height: 1.5;">Secure your account with a new password</p>
-                      </td>
-                    </tr>
-                  </table>
-                  
-                  <!-- Description -->
-                  <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
-                    <tr>
-                      <td style="padding: 0 0 30px 0;">
-                        <p style="margin: 0; color: #2d3748; font-size: 16px; line-height: 1.6; text-align: center;">
-                          We received a request to reset your Alumconn account password. Use the secure verification code below to proceed with resetting your password.
-                        </p>
-                      </td>
-                    </tr>
-                  </table>
-                  
-                  <!-- OTP Card -->
-                  <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
-                    <tr>
-                      <td style="text-align: center;">
-                        <div style="background: linear-gradient(135def, #fef2f2 0%, #fee2e2 100%); border: 2px solid #fca5a5; border-radius: 12px; padding: 30px; margin: 20px 0; position: relative; overflow: hidden;">
-                          <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #dc2626, #b91c1c, #ef4444, #b91c1c, #dc2626);"></div>
-                          <p style="margin: 0 0 15px 0; color: #7f1d1d; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Reset Verification Code</p>
-                          <div style="font-family: 'Courier New', Monaco, monospace; font-size: 36px; font-weight: 700; color: #dc2626; letter-spacing: 12px; margin: 10px 0; text-shadow: 0 2px 4px rgba(220, 38, 38, 0.1);">
-                            ${otp}
-                          </div>
-                          <p style="margin: 15px 0 0 0; color: #991b1b; font-size: 13px;">Use this code to reset your password</p>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                  
-                  <!-- Timer Alert -->
-                  <table width="100%" cellpadding="0" cellspacing="0" style="margin: 25px 0;">
-                    <tr>
-                      <td>
-                        <div style="background: linear-gradient(135deg, #fff5b4 0%, #fed7aa 100%); border-left: 4px solid #f59e0b; border-radius: 8px; padding: 20px; margin: 20px 0;">
-                          <div style="display: flex; align-items: center;">
-                            <span style="font-size: 20px; margin-right: 12px;">⏰</span>
-                            <div>
-                              <p style="margin: 0; color: #92400e; font-size: 15px; font-weight: 600;">
-                                <strong>Security Timer:</strong> Code expires in 5 minutes
-                              </p>
-                              <p style="margin: 5px 0 0 0; color: #b45309; font-size: 14px;">
-                                Complete the password reset process promptly for security.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                  
-                  <!-- CTA Button -->
-                  <table width="100%" cellpadding="0" cellspacing="0" style="margin: 40px 0 30px 0;">
-                    <tr>
-                      <td style="text-align: center;">
-                        <a href="https://alumconn.in" style="display: inline-block; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 16px; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);">
-                          <span style="margin-right: 8px;">🔒</span>
-                          Reset Password Now
-                        </a>
-                        <p style="margin: 20px 0 0 0; color: #718096; font-size: 14px;">
-                          Or visit: <a href="https://alumconn.in" style="color: #dc2626; text-decoration: none; font-weight: 600;">alumconn.in</a>
-                        </p>
-                      </td>
-                    </tr>
-                  </table>
-                  
-                </td>
-              </tr>
-              
-              <!-- Security Notices -->
-              <tr>
-                <td style="background-color: #f7fafc; padding: 30px 40px; border-top: 1px solid #e2e8f0;">
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td>
-                        <!-- Security Notice -->
-                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
-                          <p style="margin: 0 0 10px 0; color: #2d3748; font-size: 15px; font-weight: 600;">
-                            <span style="margin-right: 8px;">🔒</span>Security Notice
-                          </p>
-                          <p style="margin: 0; color: #4a5568; font-size: 14px; line-height: 1.5;">
-                            We never ask for your reset code via phone or email. If you didn't request this reset, please ignore this message and contact our security team immediately.
-                          </p>
-                        </div>
-                        
-                        <!-- Not You Alert -->
-                        <div style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border: 1px solid #f87171; border-radius: 8px; padding: 20px;">
-                          <p style="margin: 0 0 10px 0; color: #7f1d1d; font-size: 15px; font-weight: 600;">
-                            <span style="margin-right: 8px;">⚠️</span>Didn't Request This?
-                          </p>
-                          <p style="margin: 0; color: #991b1b; font-size: 14px; line-height: 1.5;">
-                            If you didn't request a password reset, your account may be at risk. Please <a href="mailto:team@alumconn.in" style="color: #dc2626; font-weight: 600;">contact our security team</a> immediately.
-                          </p>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              
-              <!-- Footer -->
-              <tr>
-                <td style="background-color: #2d3748; padding: 40px 40px 30px 40px;">
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td style="text-align: center;">
-                        <h3 style="margin: 0 0 20px 0; color: #ffffff; font-size: 18px; font-weight: 600;">Need Help?</h3>
-                        <div style="margin: 20px 0;">
-                          <a href="https://alumconn.in" style="display: inline-block; margin: 0 15px; color: #90cdf4; text-decoration: none; font-size: 14px; font-weight: 500;">Website</a>
-                          <span style="color: #4a5568;">|</span>
-                          <a href="mailto:support@alumconn.in" style="display: inline-block; margin: 0 15px; color: #90cdf4; text-decoration: none; font-size: 14px; font-weight: 500;">Support</a>
-                          <span style="color: #4a5568;">|</span>
-                          <a href="mailto:security@alumconn.in" style="display: inline-block; margin: 0 15px; color: #f87171; text-decoration: none; font-size: 14px; font-weight: 500;">Security</a>
-                        </div>
-                        <div style="margin: 25px 0 15px 0; padding-top: 20px; border-top: 1px solid #4a5568;">
-                          <p style="margin: 0; color: #9ca3af; font-size: 13px; line-height: 1.4;">
-                            <strong>Alumconn Security Team</strong><br>
-                            Protecting your account and personal information 24/7.
-                          </p>
-                        </div>
-                        <p style="margin: 15px 0 0 0; color: #6b7280; font-size: 12px;">
-                          © 2024 Alumconn. All rights reserved. | This security email was sent to ${email}
-                        </p>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              
-            </table>
-            
-            <!-- Email Client Compatibility -->
-            <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; margin-top: 20px;">
-              <tr>
-                <td style="text-align: center; padding: 20px;">
-                  <p style="margin: 0; color: #9ca3af; font-size: 12px;">
-                    Having trouble? <a href="https://alumconn.in/support" style="color: #dc2626;">Contact Security Support</a>
-                  </p>
-                </td>
-              </tr>
-            </table>
-            
-          </td>
-        </tr>
-      </table>
+      <div style="background: #f8fafc; border-radius: 10px; padding: 30px; margin: 20px 0;">
+        <h2 style="color: #dc2626; margin: 0 0 20px 0; text-align: center;">Password Reset Request</h2>
+        <p style="color: #374151; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
+          We received a request to reset your password for your Alumconn account. Use the OTP below to proceed with password reset:
+        </p>
+        
+        <div style="background: white; border: 2px dashed #dc2626; border-radius: 10px; padding: 25px; text-align: center; margin: 25px 0;">
+          <p style="color: #6b7280; font-size: 14px; margin: 0 0 10px 0;">Your reset code:</p>
+          <div style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #dc2626; font-family: 'Courier New', monospace;">
+            ${otp}
+          </div>
+        </div>
+        
+        <div style="background: #fef3cd; border-radius: 8px; padding: 15px; margin: 20px 0;">
+          <p style="color: #92400e; font-size: 14px; margin: 0;">
+            ⏰ This OTP will expire in <strong>5 minutes</strong>. Please use it promptly to reset your password.
+          </p>
+        </div>
+        <!-- Visit Site Button -->
+        <div style="text-align: center; margin: 25px 0;">
+          <a href="https://alumconn.in" style="display: inline-block; background-color: #03045e; color: white; padding: 12px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
+            🌐 Visit Alumconn.in
+          </a>
+        </div>
+        
+        <div style="background: #fee2e2; border-radius: 8px; padding: 15px; margin: 20px 0;">
+          <p style="color: #991b1b; font-size: 14px; margin: 0;">
+            🔒 If you didn't request a password reset, please ignore this email and your password will remain unchanged.
+          </p>
+        </div>
+      </div>
       
-    </body>
-    </html>
+      <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+        <p style="color: #9ca3af; font-size: 12px; margin: 0 0 10px 0;">
+          This email was sent by Alumconn • Alumni Connection Platform
+        </p>
+        <p style="color: #9ca3af; font-size: 12px; margin: 0;">
+          <a href="https://alumconn.in" style="color: #03045e; text-decoration: none;">Visit our website</a> | 
+          <a href="mailto:team@alumconn.in" style="color: #03045e; text-decoration: none;">Contact Support</a>
+        </p>
+      </div>
+    </div>
     `
   );
   
